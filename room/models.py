@@ -18,3 +18,6 @@ class Entry(models.Model):
     parent = models.ForeignKey('self', related_name="children", null=True, on_delete=models.SET_NULL)
     category = models.ForeignKey(Category, related_name="entries", on_delete=models.PROTECT)
     room = models.ForeignKey(Room, related_name="entries", on_delete=models.PROTECT)
+    votes = models.IntegerField(null=True, default=0)
+    
+

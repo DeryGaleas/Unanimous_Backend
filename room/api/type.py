@@ -23,3 +23,4 @@ class EntryType:
     content: auto
     category : CategoryType
     room : RoomType
+    votes : auto

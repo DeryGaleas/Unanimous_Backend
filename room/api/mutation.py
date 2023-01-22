@@ -2,7 +2,7 @@ import uuid
 from room.models import Category, Room, Entry
 from strawberry_django_plus import gql
 from user.api.utils import login_required_decorator
-from room.api.input import CategoryCreateInput, RoomCreateInput, EntryCreateInput
+from room.api.input import CategoryCreateInput, RoomCreateInput, EntryCreateInput, EntryUpdateVotesInput
 from room.api.type import CategoryType, RoomType, EntryType
 from asgiref.sync import sync_to_async 
 from strawberry.types import Info
@@ -26,7 +26,14 @@ class Mutation:
 
    @gql.django.field
    async def create_entry(self, info:Info, data:EntryCreateInput) -> EntryType:
-      entry : Entry = Entry.objects.acreate(**data.__dict__)
+      entry : Entry = await Entry.objects.acreate(**data.__dict__)
       return entry
 
-    
+
+   @gql.django.field
+   async def update_entry_votes(self, info:Info, data:EntryUpdateVotesInput) -> EntryType:
+      entry : Entry = await Entry.objects.aget(id = data.id)
+      entry.votes = data.votes
+      sync_to_async(entry.save)()
+      return entry
+

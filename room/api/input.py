@@ -3,6 +3,7 @@ from strawberry_django_plus import gql
 from strawberry import auto, ID 
 import strawberry
 
+
 @gql.django.input(Category)
 class CategoryCreateInput:
     name : auto
@@ -18,6 +19,12 @@ class EntryCreateInput:
     content: auto
     category_id : ID
     room_id : strawberry.scalars.ID
+    votes : auto
+
+@gql.django.input(Entry)
+class EntryUpdateVotesInput:
+    id : ID
+    votes : auto
 
 
 
