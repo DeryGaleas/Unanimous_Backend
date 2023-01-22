@@ -12,5 +12,15 @@ class RoomCreateInput:
     name: auto
 
 
+@gql.django.input(Entry)
+class EntryCreateInput:
+    title : auto
+    content: auto
+    category_id : ID
+    room_id : strawberry.scalars.ID
+
+
+
+
 
 
