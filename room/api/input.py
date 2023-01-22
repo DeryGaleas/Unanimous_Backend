@@ -7,6 +7,10 @@ import strawberry
 class CategoryCreateInput:
     name : auto
 
+@gql.django.input(Room)
+class RoomCreateInput:
+    name: auto
+
 
 
 
