@@ -2,7 +2,7 @@ import uuid
 from room.models import Category, Room, Entry
 from strawberry_django_plus import gql
 from user.api.utils import login_required_decorator
-from room.api.input import CategoryCreateInput, RoomCreateInput, EntryCreateInput, EntryUpdateVotesInput
+from room.api.input import CategoryCreateInput, RoomCreateInput, EntryCreateInput, EntryUpdateVotesInput, MergeEntriesInput
 from room.api.type import CategoryType, RoomType, EntryType
 from asgiref.sync import sync_to_async 
 from strawberry.types import Info
@@ -29,7 +29,6 @@ class Mutation:
       entry : Entry = await Entry.objects.acreate(**data.__dict__)
       return entry
 
-
    @gql.django.field
    async def update_entry_votes(self, info:Info, data:EntryUpdateVotesInput) -> EntryType:
       entry : Entry = await Entry.objects.aget(id = data.id)
@@ -37,3 +36,14 @@ class Mutation:
       sync_to_async(entry.save)()
       return entry
 
+   @gql.django.field
+   async def merge_entries(self, info:Info, data:MergeEntriesInput) -> EntryType:
+      entry1 : Entry = await Entry.objects.aget(id = data.entry1_id)
+      entry2 : Entry = await Entry.objects.aget(id = data.entry2_id)
+      room_id = entry1.room_id
+      parent_entry = await Entry.objects.acreate(title=data.title, content=data.content, category_id=data.category_id, room_id=room_id)
+      entry1.parent = parent_entry
+      entry2.parent = parent_entry
+      await sync_to_async(entry1.save)()
+      await sync_to_async(entry2.save)()
+      return parent_entry 
