@@ -26,6 +26,15 @@ class EntryUpdateVotesInput:
     id : ID
     votes : auto
 
+@gql.django.input(Entry)
+class MergeEntriesInput:
+    entry1_id : ID
+    entry2_id : ID
+    title : auto
+    content : auto
+    category_id : ID
+
+
 
 
 
