@@ -19,6 +19,7 @@ class EntryType:
     id : auto
     created_at : auto
     is_valid : auto
+    is_children : auto
     title : auto
     content: auto
     category : CategoryType

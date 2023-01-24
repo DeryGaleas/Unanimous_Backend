@@ -2,6 +2,7 @@ from room.models import Category, Room, Entry
 from strawberry_django_plus import gql
 from strawberry import auto, ID 
 import strawberry
+from typing import List
 
 
 @gql.django.input(Category)
@@ -28,12 +29,25 @@ class EntryUpdateVotesInput:
 
 @gql.django.input(Entry)
 class MergeEntriesInput:
-    entry1_id : ID
-    entry2_id : ID
+    entries_id : List[ID]
     title : auto
     content : auto
     category_id : ID
 
+@gql.django.input(Entry)
+class DismergeEntriesInput:
+    parent_id : ID
+    children_id : List[ID]
+
+@gql.django.input(Entry)
+class UpdateEntriesCategoryInput:
+    entries_id : List[ID]
+    Category_id : ID
+
+
+@gql.django.input(Entry)
+class DeleteEntryInput:
+    entry_id : ID
 
 
 
