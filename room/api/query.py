@@ -10,7 +10,6 @@ class Query:
 
     @gql.django.field
     def get_all_categories(self, info:Info) -> List[CategoryType]:
-
         categories = Category.objects.all()
         return categories
 
